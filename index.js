@@ -17,15 +17,34 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
+        // const usersCollection = client.db('taskUpkeep').collection('users');
+        const taskCollection = client.db('taskUpkeep').collection('allAddedTasks');
+        // const taskCollection = client.db('taskUpkeep').collection('allTasks');
+
+        // app.post('/users', async (req, res) => {
+        //     const user = req.body;
+        //     const result = await usersCollection.insertOne(user);
+        //     res.send(result);
+        // });
 
 
+        // app.get('/alladdedtasks', async (req, res) => {
+        //     const query = {};
+        //     const mytask = await taskCollection.find(query).toArray();
+        //     res.send(mytask);
+        // });
+        app.post('/alltasks', async (req, res) => {
+            const allAddedTasks = req.body;
+            const result = await taskCollection.insertOne(allAddedTasks)
+            res.send(result);
+        });
 
     }
     finally {
 
     }
 }
-run().catch(console.log);
+run().catch(err => console.error(err));
 
 
 
@@ -33,45 +52,6 @@ run().catch(console.log);
 app.get('/', async (req, res) => {
     res.send('Task-Upkeep server Running');
 });
-
-
-// Loading Data
-// const catagories = require('./data/catagories.json');
-
-// const courses = require('./data/courses.json');
-
-
-
-
-// // Loading catagories
-// app.get('/catagories', (req, res) => {
-//     res.send(catagories);
-// });
-
-
-// // Loading catagories by ID
-// app.get('/courses/:id', (req, res) => {
-//     const id = req.params.id;
-//     const selectedCourses = courses.find(c => c._id === id);
-
-//     res.send(selectedCourses);
-// });
-
-
-// app.get('/course/:id', (req, res) => {
-//     const id = req.params.id;
-//     const CourseDetails = courses.filter(c => c.category_id == id);
-
-//     res.send(CourseDetails);
-// });
-
-// // Checkout page as per user login
-// app.get('/checkout/:id', (req, res) => {
-//     const id = req.params.id;
-//     const CourseDetails = courses.filter(c => c.category_id == id);
-
-//     res.send(CourseDetails);
-// });
 
 app.listen(port, () => {
     console.log('Task-Upkeep server running on port on', port);
